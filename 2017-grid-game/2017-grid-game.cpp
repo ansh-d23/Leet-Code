@@ -12,8 +12,12 @@ public:
             post[i] = post[i+1]+grid[1][i];
         }
         long long res= LONG_MAX;
-
         for(int i=0;i<n;i++){
+            /*int temp=post[i]+pre[i];
+            if(temp>res){
+                res=temp;
+                ans = max(post[0]-post[i],pre[n-1]-pre[i]);
+            }*/
             res = min(res,max(post[0]-post[i],pre[n-1] - pre[i]));
         }
         return res;
