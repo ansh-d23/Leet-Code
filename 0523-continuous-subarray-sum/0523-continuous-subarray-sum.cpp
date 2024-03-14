@@ -7,12 +7,11 @@ public:
         for(int i=0;i<n;i++){
             sum+=nums[i];
             int r=sum%k;
-            cout<<r<<" ";
             if(mpp.find(r)!=mpp.end()) {
                 if(i-mpp[r]>=2) return true;
-            }else{
-                 mpp[r]=i;
             }
+            else mpp[r]=i;
+    
         }
         return false;
     }
