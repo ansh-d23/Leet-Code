@@ -5,13 +5,10 @@ public:
         int count=0;
         for(int i=0;i<points.size()-1;i++){
             if(points[i][1]<points[i+1][0]){
-                count++;
-                continue;
+                count++; continue;
             }else{
-                int maxi= max(points[i][0],points[i+1][0]);
-                int mini= min(points[i][1],points[i+1][1]);
-                points[i+1][0]=maxi;
-                points[i+1][1]=mini;
+                points[i+1][0]= max(points[i][0],points[i+1][0]);
+                points[i+1][1]= min(points[i][1],points[i+1][1]);
             }
         }
         return count+1;
