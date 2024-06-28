@@ -1,6 +1,6 @@
 class Solution {
 public:
-    void backtrack(int index,int k, vector<int>& nums, int& count,unordered_map<int,int> mpp) {
+    void backtrack(int index,int k, vector<int>& nums, int& count,unordered_map<int,int>& mpp) {
 
         if (index == nums.size()) {
             count++;
@@ -9,7 +9,7 @@ public:
 
         backtrack(index+1,k,nums,count,mpp);
 
-        if(mpp.find(nums[index]+k) == mpp.end() && mpp.find(nums[index]-k) == mpp.end()){
+        if(!mpp[nums[index]+k] && !mpp[nums[index]-k]){
 
             mpp[nums[index]]++;
             backtrack(index+1,k,nums,count,mpp);
