@@ -1,37 +1,30 @@
 class Solution {
 public:
+    bool backtrack(int k, vector<int> &nums, int target, int subsum, int start, vector<int>& used) {
+        if (k == 0) return true;
+        if (subsum == target)
+            return backtrack(k - 1, nums, target, 0, 0, used);
 
-    void backtrack(int i,vector<int> ds,vector<int>& nums,int target, int &ans){
-        if(target==0){
-            ans++;
-            return;
+        for (int j = start; j < nums.size(); j++) {
+            if (!used[j] && subsum + nums[j] <= target) {
+                used[j] = 1;
+                if (backtrack(k, nums, target, subsum + nums[j], j + 1, used)) return true;
+                used[j] = 0;
+            }
         }
 
-        if(target>=0){
-            ds.push_back(nums[i]);
-            backtrack(i+1,ds,nums,target-nums[i],ans);
-            ds.pop_back();
-        }
-        
-
-        
+        return false;
     }
 
     bool canPartitionKSubsets(vector<int>& nums, int k) {
+        int sum = accumulate(nums.begin(), nums.end(), 0);
+        if (sum % k != 0) return false;
+        int target = sum / k;
 
-        vector<int> ds;
-        int sum=0;
-        for(int i=0;i<nums.size();i++) sum+=nums[i];
-        int target;
-        if(sum%k==0) target = sum/k;
-        else return false;
+        sort(nums.rbegin(), nums.rend());
 
-        int ans=0;
+        vector<int> used(nums.size(), 0);
 
-        backtrack(0,ds,nums,target,ans);
-
-        if(ans==k) return true;
-        else return false;
-        
+        return backtrack(k, nums, target, 0, 0, used);
     }
 };
