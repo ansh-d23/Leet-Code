@@ -21,7 +21,7 @@ public:
         if (sum % k != 0) return false;
         int target = sum / k;
 
-        sort(nums.rbegin(), nums.rend());
+        
 
         vector<int> used(nums.size(), 0);
 
