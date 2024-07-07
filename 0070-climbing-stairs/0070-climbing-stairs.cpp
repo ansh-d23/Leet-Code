@@ -1,17 +1,20 @@
 class Solution {
 public:
     
-    int recurr(int i,int n){
-        if(i==n) return 1;
-        if(i>=n) return 0;
-
-        int left = recurr(i+1,n);
-        int right = recurr(i+2,n);
-
-        return left+right;
-    }
 
     int climbStairs(int n) {
-        return recurr(0,n);
+
+        vector<int> dp(n+1);
+
+        dp[0]=1;
+        dp[1]=1;
+
+        for(int i=2;i<=n;i++){
+            dp[i] = dp[i-1]+dp[i-2];
+        }
+
+        return dp[n];
+        
+        
     }
 };
