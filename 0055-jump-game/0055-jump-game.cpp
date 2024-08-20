@@ -13,8 +13,6 @@ public:
             }
         }
 
-        cout<<maxindex;
-
         if(maxindex>=nums.size()-1) return true;
         else return false;
         
