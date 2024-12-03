@@ -1,16 +1,19 @@
 class Solution {
 public:
     string addSpaces(string s, vector<int>& spaces) {
-        string ans;
-        int k=0;
-        for(int i=0;i<spaces.size();i++){
-            string temp = s.substr(k,spaces[i]-k);
-            ans+=temp;
-            ans+=" ";
-            k=spaces[i];
-            cout<<temp<<endl;
+        string result(s.length() + spaces.size(), 0);
+        int writePos = 0;
+        int readPos = 0;
+        
+        for (int spacePos : spaces) {
+            while (readPos < spacePos) {
+                result[writePos++] = s[readPos++];
+            }
+            result[writePos++] = ' ';
         }
-        ans+=s.substr(k);
-        return ans;
+        while (readPos < s.length()) {
+            result[writePos++] = s[readPos++];
+        }
+        return result;
     }
 };
