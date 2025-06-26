@@ -1,23 +1,22 @@
 class Solution {
 public:
-    int longestSubsequence(string s, int k) {
-        int n = s.size();
-        int count = 0;    
-        int power = 1;   
-        long long value = 0;
+    int f(int i, int size, int sum, string &s, vector<vector<int>>& dp) {
+        if (i < 0) return 0;
+        if (dp[i][size] != -1) return dp[i][size];
 
-        for (int i = n - 1; i >= 0; --i) {
-            if (s[i] == '0') {
-                count++;
-            } else {
-                if (power <= k && value + power <= k) {
-                    value += power;
-                    count++;
-                }
-            }
-            if (power <= k) power *= 2;
+        int no = f(i - 1, size, sum, s, dp);
+        int yes = 0;
+
+        if (((s[i] - '0') * pow(2, size)) <= sum) {
+            yes = 1 + f(i - 1, size + 1, sum - (s[i] - '0') * pow(2, size), s, dp);
         }
 
-        return count;
+        return dp[i][size] = max(no, yes);
+    }
+
+    int longestSubsequence(string s, int k) {
+        int n = s.size();
+        vector<vector<int>> dp(n, vector<int>(n, -1));
+        return f(n - 1, 0, k, s, dp);
     }
 };
