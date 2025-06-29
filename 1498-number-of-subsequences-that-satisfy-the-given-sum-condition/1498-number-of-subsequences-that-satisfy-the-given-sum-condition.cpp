@@ -12,13 +12,13 @@ public:
             powers[i] = (powers[i - 1] * 2) % MOD;
         }
 
-        for(int i=0;i<nums.size();i++){
-            for(int j=i;j<nums.size();j++){
-                long long sum=nums[i]+nums[j];
-                if((j==i)  && sum<=target) count++;
-                else if(sum<=target) count=(count+powers[j-i-1]) % MOD;
-                else break;
-            }
+        int left=0;
+        int right=n-1;
+        while(left<=right){
+            if(nums[left]+nums[right]<=target){
+                count=(count+powers[right-left])%MOD;
+                left++;
+            }else right--;
         }
         return count;
     }
