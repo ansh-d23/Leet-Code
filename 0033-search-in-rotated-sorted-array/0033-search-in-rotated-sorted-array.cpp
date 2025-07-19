@@ -1,25 +1,31 @@
 class Solution {
 public:
     int search(vector<int>& nums, int target) {
-        int n = nums.size()-1;
+
+        // brute -> O(N)
+        // optimized -> binary search with some twerk
+
+        int n = nums.size();
+
         int low = 0;
-        int high = n;
+        int high = n-1;
 
         while(low<=high){
-            int mid =  (high+low)/2;
-            if(target == nums[mid]) return mid;
-            if(nums[mid] >= nums[0]){
-                if(target>=nums[low] && target<=nums[mid]){
-                high=mid-1;
+            int mid = low + (high-low)/2;
+            if(nums[mid]==target){
+                return mid;
+            }else 
+            if(target < nums[mid]){
+                if(target >= nums[low] && target <= nums[mid]){
+                    high = mid-1;
                 }else{
-                low = mid+1;
+                    low = mid+1;
                 }
-
             }else{
                 if(target>=nums[mid] && target<=nums[high]){
-                low=mid+1;
+                    low=mid+1;
                 }else{
-                high = mid-1;
+                    high=mid-1;
                 }
             }
         }
