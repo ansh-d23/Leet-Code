@@ -1,42 +1,32 @@
 class Solution {
 public:
-
-    bool solve(vector<int>& a,int mid, int n, int m)
-    {
-        int sc=1;
-        long long sum=0;
-        for(int i=0;i<n;++i)
-        {
-            if(sum+a[i]>mid){
-                sc++;
-                sum=a[i];
-                if(sc>m || a[i]>mid) return false; 
-            }
-            else{
-                sum+=a[i];
-            }   
-        }
-        return true;
-    }
-
     int splitArray(vector<int>& nums, int k) {
-        int n=nums.size();
-        int sum= accumulate(nums.begin(),nums.end(),0);
-        
-        int s=0;
-        int e=sum;
-        int ans=-1;
-        while(s<=e)
-        {
-            int mid=s+(e-s)/2;
-            if(solve(nums,mid,n,k)){
-                ans=mid;
-                e=mid-1;
-            }
-            else{
-                s=mid+1;
+
+        int n = nums.size();
+
+        vector<vector<int>> dp(k+1,vector<int>(n+1,INT_MAX));
+        vector<int> pref(n+1,0);
+
+        pref[1]=nums[0];
+        for(int i=2;i<=n;i++){
+            pref[i] = pref[i-1] + nums[i-1]; 
+        }
+
+        //base case
+        for(int i=1;i<=n;i++){
+            dp[1][i] = pref[i];
+        }
+
+        for(int i=2;i<=k;i++){
+            for(int j=i;j<=n;j++){
+                for(int p=1;p<j;p++){
+                    int last_subarray = pref[j] - pref[p];
+                    int subarray_k = max(dp[i-1][p], last_subarray);
+                    dp[i][j] = min(dp[i][j],subarray_k);
+                }
             }
         }
-        return ans;
+
+        return dp[k][n];
     }
 };
