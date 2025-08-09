@@ -1,39 +1,45 @@
 class Solution {
 public:
-    bool dfs(int node, vector<int> &vis, vector<int> &pathvis, vector<vector<int>> &adj){
-        vis[node]=1;
-        pathvis[node]=1;
+    bool canFinish(int V, vector<vector<int>>& prereq) {
 
-        for(auto it : adj[node]){
-            if(vis[it]==0){
-                if(dfs(it,vis,pathvis,adj)==true) return true;
-            }else if(pathvis[it]==1){
-                return true;
+        // toposort using kahn's algorithm (bfs approach)
+        vector<vector<int>> adj(V);
+        vector<int> indeg(V,0);
+
+        for(auto& it : prereq){
+            adj[it[0]].push_back(it[1]);
+        }
+
+        for(auto& vec : adj){
+            for(int& it : vec){
+                indeg[it]++;
             }
         }
 
-        pathvis[node]=0;
-        return false;
-    }
-    bool canFinish(int numcourses, vector<vector<int>>& prerequisites) {
-    
-        vector<vector<int>> adj(numcourses);
-
-        for(auto it : prerequisites){
-            int l = it[0];
-            int r = it[1];
-            adj[l].push_back(r);
-        }
-
-        vector<int> vis(numcourses,0);
-        vector<int> pathvis(numcourses,0);
-
-        for(int i=0;i<numcourses;i++){
-            if(vis[i]==0){
-                if(dfs(i,vis,pathvis,adj)==true) return false;
+        queue<int> que;
+        for(int i=0;i<V;i++){
+            if(indeg[i]==0){
+                que.push(i);
             }
         }
 
-        return true;
+        vector<int> topo;
+        while(!que.empty()){
+            int node = que.front();
+            que.pop();
+            topo.push_back(node);
+
+            for(auto& it : adj[node]){
+                indeg[it]--;
+                if(indeg[it]==0) que.push(it);
+            }
+        }
+
+        for(int& it : topo){
+            cout<<it<<" ";
+        }
+        return topo.size()==V;
+
+        
     }
 };
