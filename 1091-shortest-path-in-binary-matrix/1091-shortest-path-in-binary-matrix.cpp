@@ -4,41 +4,35 @@ public:
 
         int n = grid.size();
         int m = grid[0].size();
-        vector<vector<int>> dist(n, vector<int>(m, INT_MAX));
 
-        if (grid[0][0] == 1 || grid[n - 1][m - 1] == 1) return -1;
+        vector<vector<int>> dist(n, vector<int>(m,1e9));
+        queue<pair<int,int>> que;
+        
+        if(grid[0][0] != 0 || grid[n-1][m-1]!=0) return -1;
+        dist[0][0]=0;
+        que.push({0,0});
 
-        priority_queue< pair<int,pair<int,int>>, vector<pair<int,pair<int,int>>>, greater<pair<int,pair<int,int>>>> pq;
+        vector<int> dx = {1,0,-1,0,1,1,-1,-1};
+        vector<int> dy = {0,1,0,-1,1,-1,1,-1};
 
-        dist[0][0]=1;
-        pq.push({1,{0,0}});
-        int dirx[] = {0,1,0,-1,1,1,-1,-1};
-        int diry[] = {1,0,-1,0,1,-1,-1,1};
+        while(!que.empty()){
+            auto [i, j] = que.front();
+            que.pop();
 
-        while(!pq.empty()){
+            for(int t=0;t<8;t++){
+                int nx = i + dx[t];
+                int ny = j + dy[t];
 
-            int dis = pq.top().first;
-            int i = pq.top().second.first;
-            int j = pq.top().second.second;
-            pq.pop();
-
-            if(i==(n-1) && j==(m-1)) return dist[n-1][m-1];
-
-            for(int it=0;it<8;it++){
-                int newx = i + dirx[it];
-                int newy = j + diry[it];
-
-                if(newx>=0 && newx<n && newy>=0 && newy<m && grid[newx][newy]==0){
-                    if(dis + 1 < dist[newx][newy]){
-                        dist[newx][newy]=dis+1;
-                        pq.push({dist[newx][newy],{newx,newy}});
+                if(nx>=0 && nx<n && ny>=0 && ny<m && grid[nx][ny]==0){
+                    if(dist[nx][ny] > 1 + dist[i][j]){
+                        dist[nx][ny] = 1 + dist[i][j];
+                        que.push({nx,ny});
                     }
                 }
             }
-
         }
 
-        return -1;
+        return dist[n-1][m-1]+1;
         
     }
 };
