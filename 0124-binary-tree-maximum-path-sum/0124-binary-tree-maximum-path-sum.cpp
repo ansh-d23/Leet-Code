@@ -14,11 +14,11 @@ public:
     int dfs(TreeNode* root, int &maxi){
         if(root==nullptr) return 0;
 
-        int left = max(0, dfs(root->left, maxi));  
-        int right = max(0, dfs(root->right, maxi));
+        int left = dfs(root->left, maxi);  
+        int right = dfs(root->right, maxi);
 
-        maxi = max(maxi , root->val + left + right);
-        return root->val + max({left , right});
+        maxi = max({maxi , root->val + left + right, root->val + max({left , right}),root->val});
+        return max(root->val + max({left , right}), root->val);
     }
 
     int maxPathSum(TreeNode* root) {
