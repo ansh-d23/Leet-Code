@@ -10,21 +10,22 @@
  * };
  */
 class Solution {
-public:
-    int dfstree(TreeNode* root){
+    int dfs(TreeNode* root, bool& flag){
         if(root == nullptr) return 0;
 
-        int left  = dfstree(root->left);
-        int right = dfstree(root->right);
+        int left = dfs(root->left,flag);
+        int right = dfs(root->right,flag);
 
-        if(left==-1 || right==-1) return -1;
-        if(abs(left-right) > 1) return -1;
-
+        if(abs(left-right)>1) flag=false;
         return 1 + max(left,right);
     }
+public:
     bool isBalanced(TreeNode* root) {
 
-        return dfstree(root) != -1;
-        
+        if(root==nullptr) return true;
+
+        bool flag=true;
+        int ans = dfs(root,flag);
+        return flag;
     }
 };
